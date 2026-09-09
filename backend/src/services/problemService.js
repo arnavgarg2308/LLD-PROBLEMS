@@ -1,73 +1,78 @@
 const problems = [
     {
-        id: 1,
-        title: "Parking Lot",
+        id: "parking-lot",
+        title: "Parking Lot System",
         difficulty: "Medium",
+        icon: "🅿️",
         description:
-            "Design a parking lot system that supports multiple vehicle types, parking spots, entry, exit and ticket generation.",
+            "Design a scalable parking lot system that supports multiple vehicle types, parking floors, ticket generation, and payments.",
         requirements: [
             "Support multiple vehicle types",
-            "Support multiple parking spots",
-            "Generate parking tickets",
-            "Handle vehicle entry and exit",
-            "Calculate parking fees"
+            "Multiple parking floors",
+            "Automatic spot allocation",
+            "Ticket generation",
+            "Payment handling",
         ],
         constraints: [
-            "System should be extensible",
+            "The design should be extensible",
             "New vehicle types should be easy to add",
-            "Parking allocation logic should be flexible"
-        ]
+            "Parking allocation logic should be flexible",
+        ],
+        hints: [
+            "Think about which class owns parking spots.",
+            "Separate allocation logic from the ParkingLot class.",
+            "Consider using Strategy Pattern for allocation.",
+        ],
     },
-
     {
-        id: 2,
+        id: "elevator-system",
         title: "Elevator System",
-        difficulty: "Medium",
+        difficulty: "Hard",
+        icon: "🛗",
         description:
-            "Design an elevator system that handles multiple floors, elevator requests and efficient movement.",
+            "Design an elevator control system that manages multiple elevators and efficiently handles requests.",
         requirements: [
-            "Support multiple floors",
-            "Handle elevator requests",
-            "Move elevators between floors",
-            "Handle multiple elevators"
+            "Support multiple elevators",
+            "Handle internal requests",
+            "Handle external requests",
+            "Efficient elevator scheduling",
         ],
         constraints: [
-            "System should support multiple elevators",
-            "Request handling should be flexible",
-            "Design should be extensible"
-        ]
+            "System should support additional elevators",
+            "Scheduling logic should be replaceable",
+        ],
+        hints: [
+            "Separate elevator state from scheduling logic.",
+            "Think about request prioritization.",
+        ],
     },
-
     {
-        id: 3,
+        id: "vending-machine",
         title: "Vending Machine",
-        difficulty: "Easy",
+        difficulty: "Medium",
+        icon: "🥤",
         description:
-            "Design a vending machine that allows users to select products, make payments and receive products.",
+            "Design a vending machine that handles products, inventory, payments, and state transitions.",
         requirements: [
-            "Display available products",
-            "Select a product",
-            "Accept payment",
+            "Product selection",
+            "Inventory management",
+            "Payment handling",
             "Return change",
-            "Dispense product"
+            "State transitions",
         ],
         constraints: [
-            "Machine should handle different products",
-            "Payment methods should be extensible",
-            "Machine should handle insufficient payment"
-        ]
-    }
+            "Support new payment methods",
+            "Products should be easily configurable",
+        ],
+        hints: [
+            "Think about State Pattern.",
+            "Separate payment processing from inventory.",
+        ],
+    },
 ];
 
-const getAllProblems = () => {
-    return problems;
-};
+const getAllProblems = () => problems;
 
+const getProblemById = (id) => problems.find((problem) => problem.id === id);
 
-const getProblemById = (id) => {
-    return problems.find((problem) => problem.id === Number(id));
-};
-module.exports = {
-    getAllProblems,
-    getProblemById
-};
+module.exports = { getAllProblems, getProblemById };

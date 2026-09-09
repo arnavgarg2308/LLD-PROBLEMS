@@ -1,6 +1,8 @@
+import { useState, useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
 import Navbar from "../components/Navbar";
-import { problems } from "../data/mockData";
+import { getProblem } from "../services/api";
+import { problems as mockProblems } from "../data/mockData";
 import {
   ArrowLeft,
   ArrowRight,
@@ -13,8 +15,26 @@ import {
 
 function ProblemDetails() {
   const { id } = useParams();
+  const [problem, setProblem] = useState(null);
+  const [loading, setLoading] = useState(true);
 
-  const problem = problems.find((p) => p.id === id);
+  useEffect(() => {
+    getProblem(id)
+      .then(setProblem)
+      .catch(() => setProblem(mockProblems.find((p) => p.id === id) || null))
+      .finally(() => setLoading(false));
+  }, [id]);
+
+  if (loading) {
+    return (
+      <>
+        <Navbar />
+        <div className="flex min-h-[80vh] items-center justify-center">
+          <div className="h-8 w-8 animate-spin rounded-full border-4 border-slate-300 border-t-slate-900" />
+        </div>
+      </>
+    );
+  }
 
   if (!problem) {
     return (

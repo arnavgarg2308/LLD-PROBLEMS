@@ -12,40 +12,21 @@ import {
 } from "lucide-react";
 
 function History() {
-  // Temporary mock data
-  // Later Person 1 ke backend se aayega
-  const attempts = [
+  const stored = JSON.parse(sessionStorage.getItem("lld-attempts") || "[]");
+
+  // Fall back to mock data only when no real attempts exist yet
+  const attempts = stored.length > 0 ? stored : [
     {
-      id: "attempt-1",
+      id: "mock-1",
       problem: "Parking Lot System",
       icon: "🅿️",
       difficulty: "Medium",
       score: 62,
-      date: "Sep 5, 2026",
-      time: "25 min",
-      status: "Completed",
-    },
-    {
-      id: "attempt-2",
-      problem: "Parking Lot System",
-      icon: "🅿️",
-      difficulty: "Medium",
-      score: 78,
-      date: "Sep 8, 2026",
-      time: "32 min",
-      status: "Completed",
-    },
-    {
-      id: "attempt-3",
-      problem: "Vending Machine",
-      icon: "🥤",
-      difficulty: "Medium",
-      score: 84,
-      date: "Sep 7, 2026",
-      time: "28 min",
-      status: "Completed",
+      date: "Sample Attempt",
     },
   ];
+
+  const hasRealAttempts = stored.length > 0;
 
   const getScoreColor = (score) => {
     if (score >= 80) {
@@ -69,14 +50,17 @@ function History() {
     return styles[difficulty];
   };
 
-  const averageScore = Math.round(
-    attempts.reduce((total, attempt) => total + attempt.score, 0) /
-      attempts.length
-  );
+  const averageScore = attempts.length > 0
+    ? Math.round(attempts.reduce((total, attempt) => total + attempt.score, 0) / attempts.length)
+    : 0;
 
-  const bestScore = Math.max(
-    ...attempts.map((attempt) => attempt.score)
-  );
+  const bestScore = attempts.length > 0
+    ? Math.max(...attempts.map((attempt) => attempt.score))
+    : 0;
+
+  const improvement = attempts.length >= 2
+    ? attempts[0].score - attempts[attempts.length - 1].score
+    : 0;
 
   return (
     <div className="min-h-screen bg-slate-50">
@@ -195,7 +179,7 @@ function History() {
             </div>
 
             <p className="text-3xl font-bold text-slate-900">
-              +16
+              {improvement >= 0 ? "+" : ""}{improvement}
             </p>
 
             <p className="mt-1 text-sm text-slate-500">
@@ -241,7 +225,7 @@ function History() {
               <div className="text-center">
 
                 <p className="text-3xl font-bold text-indigo-300">
-                  {attempts[0].score}
+                  {attempts[attempts.length - 1]?.score ?? "-"}
                 </p>
 
                 <p className="mt-1 text-xs text-slate-400">
@@ -255,7 +239,7 @@ function History() {
               <div className="text-center">
 
                 <p className="text-3xl font-bold text-emerald-400">
-                  {attempts[1].score}
+                  {attempts[0]?.score ?? "-"}
                 </p>
 
                 <p className="mt-1 text-xs text-slate-400">
@@ -405,11 +389,11 @@ function History() {
                     {/* Button */}
 
                     <Link
-                      to={`/feedback/${attempt.id}`}
+                      to={hasRealAttempts ? `/feedback/${attempt.id}` : "/"}
                       className="flex items-center gap-2 rounded-xl bg-slate-900 px-5 py-3 text-sm font-semibold text-white transition hover:bg-indigo-600"
                     >
 
-                      View Feedback
+                      {hasRealAttempts ? "View Feedback" : "Practice Now"}
 
                       <ArrowRight size={17} />
 

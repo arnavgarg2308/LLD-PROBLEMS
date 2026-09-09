@@ -1,0 +1,41 @@
+{
+  "problem": {
+    "id": "parking-lot",
+    "title": "Parking Lot System",
+    "description": "Design a parking lot management system.",
+    "requirements": [
+      "Support multiple vehicle types",
+      "Support multiple parking floors",
+      "Allocate parking spots",
+      "Generate parking tickets",
+      "Support payment processing"
+    ]
+  },
+  "design": {
+    "classes": [
+      {
+        "name": "ParkingLot",
+        "responsibility": "Manage parking floors and parking operations"
+      },
+      {
+        "name": "ParkingFloor",
+        "responsibility": "Manage parking spots on a floor"
+      },
+      {
+        "name": "ParkingSpot",
+        "responsibility": "Store a parked vehicle"
+      },
+      {
+        "name": "Vehicle",
+        "responsibility": "Represent a vehicle entering the parking lot"
+      },
+      {
+        "name": "Ticket",
+        "responsibility": "Represent parking entry information"
+      }
+    ],
+    "relationships": "ParkingLot HAS-A ParkingFloor\nParkingFloor HAS-A ParkingSpot\nParkingSpot HAS-A Vehicle",
+    "interfaces": "PaymentStrategy\nSpotAllocationStrategy",
+    "designDecisions": "Use Strategy Pattern for parking spot allocation so different allocation algorithms can be added without modifying ParkingLot."
+  }
+}

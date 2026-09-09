@@ -1,10 +1,31 @@
+import { useState, useEffect } from "react";
 import Navbar from "../components/Navbar";
 import ProblemCard from "../components/ProblemCard";
 import ProgressCard from "../components/ProgressCard";
-import { problems, progress } from "../data/mockData";
+import { getProblems } from "../services/api";
 import { ArrowRight, Sparkles, Target } from "lucide-react";
 
 function Dashboard() {
+  const [problems, setProblems] = useState([]);
+
+  const attempts = JSON.parse(sessionStorage.getItem("lld-attempts") || "[]");
+  const uniqueProblems = new Set(attempts.map((a) => a.problemId)).size;
+  const latestScore = attempts.length > 0 ? attempts[0].score : 0;
+  const firstScore = attempts.length > 0 ? attempts[attempts.length - 1].score : 0;
+  const improvement = latestScore - firstScore;
+
+  const progress = {
+    problemsPracticed: uniqueProblems,
+    latestScore,
+    improvement,
+  };
+
+  useEffect(() => {
+    getProblems()
+      .then(setProblems)
+      .catch(() => import("../data/mockData").then((m) => setProblems(m.problems)));
+  }, []);
+
   return (
     <div className="min-h-screen bg-slate-50">
       
@@ -89,14 +110,14 @@ function Dashboard() {
 
             <ProgressCard
               type="score"
-              value={`${progress.latestScore}/100`}
+              value={attempts.length > 0 ? `${progress.latestScore}/100` : "—"}
               label="Latest Design Score"
             />
 
             <ProgressCard
               type="improvement"
-              value={`+${progress.improvement}%`}
-              label="Overall Improvement"
+              value={attempts.length >= 2 ? `${improvement >= 0 ? "+" : ""}${improvement}` : "—"}
+              label="Score Improvement"
             />
 
           </div>

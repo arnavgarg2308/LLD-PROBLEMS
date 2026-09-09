@@ -1,5 +1,5 @@
 const BACKEND_URL = "https://lld-coach-backend.onrender.com";
-const AI_URL = "https://lld-coach-ai-service.onrender.com";
+const AI_URL = "https://lld-coach-ai-service1.onrender.com";
 
 export async function getProblems() {
   const response = await fetch(`${BACKEND_URL}/api/problems`);
